@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123f2d">
+  <meta name="description" content="Child Evangelism Fellowship Christmas CPC Staff Portal">
+  <title>CEF | Christmas CPC Staff Portal</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div id="snow" aria-hidden="true"></div>
+  <main id="app">
+    <section id="setup-screen" class="setup-screen hidden">
+      <div class="setup-card">
+        <img src="assets/cef-logo.jpg" class="brand-logo" alt="Child Evangelism Fellowship logo">
+        <h1>Connect your cloud database</h1>
+        <p>This portal needs your Supabase project URL and publishable (anon) key. These values are safe for a browser only when the database has the supplied Row Level Security policies enabled. Never enter a service-role key here.</p>
+        <form id="setup-form">
+          <label>Supabase Project URL<input id="project-url" type="url" placeholder="https://your-project.supabase.co" required></label>
+          <label>Supabase publishable / anon key<textarea id="anon-key" rows="3" placeholder="Paste your publishable anon key" required></textarea></label>
+          <button class="btn primary" type="submit">Connect and continue</button>
+        </form>
+        <p class="tiny">Configuration is saved only in this browser's local storage. Use the same project URL and key on each device.</p>
+      </div>
+    </section>
+
+    <section id="login-screen" class="login-screen">
+      <div class="login-art">
+        <div class="star">✦</div><div class="light-string">✧　✦　✧　✦　✧</div>
+        <img src="assets/cef-logo.jpg" class="brand-logo login-logo" alt="Child Evangelism Fellowship logo">
+        <p class="eyebrow">CHRISTMAS MINISTRY SEASON</p>
+        <h1>Celebrating the Gift of Jesus.<br><span>Sharing the Good News.</span></h1>
+        <p class="login-description">A secure place for CPC seminar budgets, ministry reports, and accountable stewardship.</p>
+        <div class="tree">🎄</div>
+      </div>
+      <div class="login-panel">
+        <div class="login-card">
+          <div class="mobile-brand"><img src="assets/cef-logo.jpg" class="brand-logo" alt="CEF logo"></div>
+          <p class="eyebrow red">WELCOME</p>
+          <h2>Christmas CPC Staff Portal</h2>
+          <p class="muted">Sign in to continue to your ministry workspace.</p>
+          <form id="login-form">
+            <label>Email address<input id="login-email" type="email" autocomplete="username" placeholder="you@example.com" required></label>
+            <label>Password<div class="password-wrap"><input id="login-password" type="password" autocomplete="current-password" placeholder="Enter your password" required><button type="button" id="toggle-password" class="toggle">Show</button></div></label>
+            <button class="btn primary full" type="submit">Sign In <span>→</span></button>
+            <button type="button" id="forgot-password" class="text-button">Forgot password?</button>
+          </form>
+          <div class="signup-divider"><span>New staff member?</span></div>
+          <button type="button" id="show-signup" class="text-button">Create staff account / Sign up</button>
+          <form id="signup-form" class="hidden">
+            <p class="muted">Enter the basic staff details below. New accounts are registered as Staff; a CEF leader must assign leadership access separately.</p>
+            <label>Staff Name *<input id="signup-name" type="text" autocomplete="name" required></label>
+            <label>Staff Code *<input id="signup-code" type="text" required></label>
+            <label>City *<input id="signup-city" type="text" required></label>
+            <label>Region *<input id="signup-region" type="text" required></label>
+            <label>State *<input id="signup-state" type="text" required></label>
+            <label>Email address *<input id="signup-email" type="email" autocomplete="email" required></label>
+            <label>Password *<input id="signup-password" type="password" minlength="8" autocomplete="new-password" required></label>
+            <button class="btn primary full" type="submit">Create Account</button>
+            <button type="button" id="cancel-signup" class="text-button">Back to Sign In</button>
+          </form>
+          <div id="login-message" class="message" role="status"></div>
+          <button id="configure-button" class="small-link" type="button">Configure Supabase</button>
+        </div>
+        <footer>Child Evangelism Fellowship · Since 1937</footer>
+      </div>
+    </section>
+
+    <section id="portal-screen" class="portal-screen hidden">
+      <aside class="sidebar">
+        <div class="sidebar-brand"><img src="assets/cef-logo.jpg" alt="CEF logo"><div><strong>CEF CPC</strong><small>Staff Portal</small></div></div>
+        <div class="season-tag">✦ CHRISTMAS SEASON</div>
+        <nav id="nav">
+          <button data-view="dashboard" class="nav-item active">▦ <span>Dashboard</span></button>
+          <button data-view="seminars" class="nav-item">▤ <span>Seminar Expenses</span></button>
+          <button data-view="clubs" class="nav-item">♡ <span>CPC Club Reports</span></button>
+          <button data-view="outreach" class="nav-item">✧ <span>Teacher Outreach</span></button>
+          <button data-view="funding" class="nav-item">＋ <span>Funding Requests</span></button>
+          <button data-view="myreports" class="nav-item">☷ <span>My Submissions</span></button>
+          <button data-view="admin" class="nav-item admin-only hidden">⚙ <span>Administration</span></button>
+        </nav>
+        <div class="sidebar-bottom"><div class="signed-user"><div class="avatar" id="user-avatar">C</div><div><strong id="user-name">CEF Staff</strong><small id="user-role">Staff Member</small></div></div><button id="sign-out" class="signout">↪ Sign out</button></div>
+      </aside>
+      <div class="main-area">
+        <header class="topbar"><button id="mobile-menu" class="mobile-menu" aria-label="Open menu" aria-expanded="false" aria-controls="nav">☰</button><div><div class="eyebrow">CHILD EVANGELISM FELLOWSHIP</div><h1 id="page-title">Dashboard</h1></div><div class="top-actions"><span class="season-pill">✦ Christmas CPC</span><button id="refresh-data" class="icon-button" title="Refresh data">↻</button></div></header>
+        <div id="notice" class="notice hidden"></div>
+        <section id="view-container" class="view-container"></section>
+        <footer class="app-footer">“Celebrating the Gift of Jesus. Sharing the Good News.” <span>·</span> CEF Christmas CPC Portal</footer>
+      </div>
+    </section>
+  </main>
+  <div id="toast" class="toast hidden" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
